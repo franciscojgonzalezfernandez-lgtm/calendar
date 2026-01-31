@@ -1,5 +1,7 @@
 # Calendar App 🚀
 
+**UNDER CONSTRUCTION...**
+
 Simple date management app built with **Bootstrap + Redux** to master date handling before my **ambitious snowboard lesson booking platform**. Perfect portfolio project showcasing full-stack basics with MongoDB backend.
 
 
