@@ -2,7 +2,6 @@
 
 Simple date management app built with **Bootstrap + Redux** to master date handling before my **ambitious snowboard lesson booking platform**. Perfect portfolio project showcasing full-stack basics with MongoDB backend.
 
-**[Live Demo](https://franciscojgonzalezfernandez-lgtm.github.io/calendar/)** | **[Backend Repo](https://github.com/franciscojgonzalezfernandez-lgtm/calendar-backend)**
 
 ## Tech Stack
 
