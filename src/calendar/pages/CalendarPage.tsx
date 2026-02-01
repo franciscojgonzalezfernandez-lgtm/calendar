@@ -1,4 +1,5 @@
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Event } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay, addHours } from "date-fns";
 import { enUS } from "date-fns/locale/en-US";
@@ -21,7 +22,7 @@ const myEventsList: Event[] = [
   {
     title: "Javi's Birthday",
     start: new Date(),
-    end: addHours(new Date(), 1),
+    end: addHours(new Date(), 2),
   },
 ];
 
