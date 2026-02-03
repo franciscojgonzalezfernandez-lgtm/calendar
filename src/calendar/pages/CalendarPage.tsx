@@ -1,32 +1,42 @@
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import type { Event } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay, addHours } from "date-fns";
-import { enUS } from "date-fns/locale/en-US";
+import type { Event, EventPropGetter, View } from "react-big-calendar";
+import { addHours } from "date-fns";
 
 import { NavBar } from "../components/NavBar";
-
-const locales = {
-  "en-US": enUS,
-};
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
+import { CalendarEvent } from "../components/CalendarEvent";
+import { localizer } from "../../helpers";
+import { getMessages } from "../../helpers";
+import { useState } from "react";
 
 const myEventsList: Event[] = [
   {
     title: "Javi's Birthday",
     start: new Date(),
     end: addHours(new Date(), 2),
+    user: {
+      name: "Javier",
+    },
   },
 ];
 
+const myEventStyleGetter: EventPropGetter<Event> = (
+  event: Event,
+  start: Date,
+  end: Date,
+  isSelected: boolean
+) => {
+  console.log({ event, start, end, isSelected });
+  return {
+    style: {
+      backgroundColor: isSelected ? "red" : "lightblue",
+    },
+  };
+};
+
 export const CalendarPage = () => {
+  const [date, setDate] = useState<Date>(new Date());
+  const [view, setView] = useState<View>(Views.MONTH);
   return (
     <>
       <NavBar />
@@ -36,6 +46,15 @@ export const CalendarPage = () => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
+        messages={getMessages()}
+        eventPropGetter={myEventStyleGetter}
+        date={date}
+        view={view}
+        onNavigate={(date) => setDate(date)}
+        onView={(view) => setView(view)}
+        components={{
+          event: CalendarEvent,
+        }}
       />
     </>
   );
