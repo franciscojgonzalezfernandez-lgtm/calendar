@@ -8,13 +8,15 @@ import { CalendarEvent } from "../components/CalendarEvent";
 import { localizer } from "../../helpers";
 import { getMessages } from "../../helpers";
 import { useState } from "react";
+import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 
-const myEventsList: Event[] = [
+const myEventsList: ExtendedEvent[] = [
   {
     title: "Javi's Birthday",
     start: new Date(),
     end: addHours(new Date(), 2),
     user: {
+      id: "123",
       name: "Javier",
     },
   },

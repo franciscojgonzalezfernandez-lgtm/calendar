@@ -5,13 +5,10 @@ interface props {
 }
 
 export const CalendarEvent = ({ event }: props) => {
-  const { title, user, start, end } = event;
+  const { title, user } = event;
   console.log(event);
   return (
     <>
-      <span>
-        {start?.getHours()} - {end?.getHours()}
-      </span>
       <strong>{title}</strong>
       <span> - {user.name} </span>
     </>
