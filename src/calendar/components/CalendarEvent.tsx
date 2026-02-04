@@ -1,7 +1,7 @@
-import type { Event } from "react-big-calendar";
+import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 
 interface props {
-  event: Event;
+  event: ExtendedEvent;
 }
 
 export const CalendarEvent = ({ event }: props) => {
@@ -10,7 +10,7 @@ export const CalendarEvent = ({ event }: props) => {
   return (
     <>
       <strong>{title}</strong>
-      <span> - {user.name} </span>
+      {user && <span> - {user.name} </span>}
     </>
   );
 };

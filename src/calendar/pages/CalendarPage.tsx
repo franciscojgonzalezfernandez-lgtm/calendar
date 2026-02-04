@@ -22,13 +22,20 @@ const myEventsList: ExtendedEvent[] = [
   },
 ];
 
+const onDoubleClick = (event: ExtendedEvent) => {
+  console.log({ doubleClick: event });
+};
+
+const onSelect = (event: ExtendedEvent) => {
+  console.log({ click: event });
+};
+
 const myEventStyleGetter: EventPropGetter<Event> = (
   event: Event,
   start: Date,
   end: Date,
   isSelected: boolean
 ) => {
-  console.log({ event, start, end, isSelected });
   return {
     style: {
       backgroundColor: isSelected ? "red" : "lightblue",
@@ -36,9 +43,24 @@ const myEventStyleGetter: EventPropGetter<Event> = (
   };
 };
 
+const isValidView = (value: string | null): value is View =>
+  Object.values(Views).includes(value as View);
+
+const getStoredView = (key: string, fallback: View): View => {
+  const stored = localStorage.getItem(key);
+  return isValidView(stored) ? stored : fallback;
+};
+
 export const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
-  const [view, setView] = useState<View>(Views.MONTH);
+  const [view, setView] = useState<View>(
+    getStoredView("CalendarView", Views.MONTH)
+  );
+  const onViewChange = (view: View) => {
+    localStorage.setItem("CalendarView", view);
+    setView(view);
+    console.log({ View: view });
+  };
   return (
     <>
       <NavBar />
@@ -53,10 +75,12 @@ export const CalendarPage = () => {
         date={date}
         view={view}
         onNavigate={(date) => setDate(date)}
-        onView={(view) => setView(view)}
+        onView={onViewChange}
         components={{
           event: CalendarEvent,
         }}
+        onDoubleClickEvent={onDoubleClick}
+        onSelectEvent={onSelect}
       />
     </>
   );
