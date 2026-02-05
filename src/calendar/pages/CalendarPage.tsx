@@ -9,6 +9,7 @@ import { localizer } from "../../helpers";
 import { getMessages } from "../../helpers";
 import { useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
+import { CalendarModal } from "../components/CalendarModal/CalendarModal";
 
 const myEventsList: ExtendedEvent[] = [
   {
@@ -64,6 +65,7 @@ export const CalendarPage = () => {
   return (
     <>
       <NavBar />
+      <CalendarModal />
       <Calendar
         localizer={localizer}
         events={myEventsList}
