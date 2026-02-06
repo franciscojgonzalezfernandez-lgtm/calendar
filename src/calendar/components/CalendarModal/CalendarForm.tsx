@@ -1,4 +1,22 @@
+import { addHours } from "date-fns";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
+
 export const CalendarForm = () => {
+  const [formValues, setFormValues] = useState<ExtendedEvent>({
+    start: new Date(),
+    end: addHours(new Date(), 2),
+    title: "New event",
+    notes: "event notes",
+  });
+
+  const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+    setFormValues({ ...formValues, [target.name]: target.value });
+    console.log({ change: event });
+  };
   return (
     <>
       <h1>New Event</h1>
@@ -22,6 +40,8 @@ export const CalendarForm = () => {
             className="form-control"
             placeholder="Event title"
             name="title"
+            value={formValues.title}
+            onChange={onInputChanged}
             autoComplete="off"
           />
           <small id="emailHelp" className="form-text text-muted">
@@ -31,10 +51,9 @@ export const CalendarForm = () => {
 
         <div className="form-group mb-2">
           <textarea
-            type="text"
             className="form-control"
             placeholder="Notes"
-            rows="5"
+            rows={5}
             name="notes"
           ></textarea>
           <small id="emailHelp" className="form-text text-muted">
