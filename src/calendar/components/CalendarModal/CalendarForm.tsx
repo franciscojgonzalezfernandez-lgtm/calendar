@@ -24,12 +24,31 @@ export const CalendarForm = () => {
       <form className="container">
         <div className="form-group mb-2">
           <label>Start date and time</label>
-          <input className="form-control" placeholder="Start date" />
+          <DatePicker
+            selected={formValues.start}
+            className="form-control"
+            onChange={(date: Date | null) => {
+              setFormValues({ ...formValues, start: date || undefined });
+            }}
+            dateFormat="dd/MM/yyyy HH:mm"
+            showTimeSelect
+          />
         </div>
 
         <div className="form-group mb-2">
           <label>End date and time</label>
-          <input className="form-control" placeholder="End date" />
+          <DatePicker
+            selected={formValues.end}
+            onChange={(date: Date | null) => {
+              setFormValues({ ...formValues, end: date || undefined });
+            }}
+            className="form-control"
+            dateFormat="dd/MM/yyyy HH:mm"
+            minDate={formValues.start}
+            minTime={formValues.start}
+            maxTime={new Date().setHours(23, 59, 0, 0)}
+            showTimeSelect
+          />
         </div>
 
         <hr />
