@@ -1,5 +1,5 @@
-import { addHours } from "date-fns";
-import React, { useState } from "react";
+import { addHours, differenceInSeconds } from "date-fns";
+import React, { useState, type FormEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
@@ -11,17 +11,39 @@ export const CalendarForm = () => {
     title: "New event",
     notes: "event notes",
   });
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setFormValues({ ...formValues, [target.name]: target.value });
     console.log({ change: event });
   };
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitted(true);
+    const formData = new FormData(event.currentTarget);
+
+    if (!formValues.start || !formValues.end) {
+      console.error("Date incomplete");
+      return;
+    }
+    const dateDiff = differenceInSeconds(formValues.end, formValues.start);
+    if (isNaN(dateDiff) || dateDiff <= 0) {
+      console.error("Fail in dates");
+      return;
+    }
+    if (!formValues.title) {
+      console.log(formData.get("title"));
+      formData.get("title");
+      return;
+    }
+    console.log({ event });
+  };
   return (
     <>
       <h1>New Event</h1>
       <hr />
-      <form className="container">
+      <form className="container" onSubmit={onSubmit}>
         <div className="form-group mb-2">
           <label>Start date and time</label>
           <DatePicker
