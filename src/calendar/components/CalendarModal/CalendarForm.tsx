@@ -19,7 +19,7 @@ export const CalendarForm = () => {
       return "is-invalid";
     }
     return "";
-  }, [isSubmitted]);
+  }, [formValues.title, isSubmitted]);
 
   const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
