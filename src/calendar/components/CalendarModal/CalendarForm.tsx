@@ -1,8 +1,9 @@
 import { addHours, differenceInSeconds } from "date-fns";
-import React, { useState, type FormEvent } from "react";
+import React, { useMemo, useState, type FormEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
+import Swal from "sweetalert2";
 
 export const CalendarForm = () => {
   const [formValues, setFormValues] = useState<ExtendedEvent>({
@@ -12,6 +13,13 @@ export const CalendarForm = () => {
     notes: "event notes",
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const titleClass = useMemo(() => {
+    if (isSubmitted && !formValues.title) {
+      return "is-invalid";
+    }
+    return "";
+  }, [isSubmitted]);
 
   const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -24,12 +32,13 @@ export const CalendarForm = () => {
     const formData = new FormData(event.currentTarget);
 
     if (!formValues.start || !formValues.end) {
-      console.error("Date incomplete");
+      Swal.fire("Both dates should be defined", "", "error");
       return;
     }
     const dateDiff = differenceInSeconds(formValues.end, formValues.start);
     if (isNaN(dateDiff) || dateDiff <= 0) {
       console.error("Fail in dates");
+      Swal.fire("End date should be after the start date", "", "error");
       return;
     }
     if (!formValues.title) {
@@ -78,7 +87,7 @@ export const CalendarForm = () => {
           <label>Title and notes</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${titleClass}`}
             placeholder="Event title"
             name="title"
             value={formValues.title}
