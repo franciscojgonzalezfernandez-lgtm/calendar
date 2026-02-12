@@ -11,18 +11,7 @@ import { useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 import { CalendarModal } from "../components/CalendarModal/CalendarModal";
 import { useUiStore } from "../../hooks";
-
-const myEventsList: ExtendedEvent[] = [
-  {
-    title: "Javi's Birthday",
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    user: {
-      id: "123",
-      name: "Javier",
-    },
-  },
-];
+import { useCalendarStore } from "../../hooks/useCalendarStore";
 
 const onSelect = (event: ExtendedEvent) => {
   console.log({ click: event });
@@ -51,6 +40,7 @@ const getStoredView = (key: string, fallback: View): View => {
 
 export const CalendarPage = () => {
   const { openDateModal } = useUiStore();
+  const { events } = useCalendarStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
     getStoredView("CalendarView", Views.MONTH)
@@ -70,7 +60,7 @@ export const CalendarPage = () => {
       <CalendarModal />
       <Calendar
         localizer={localizer}
-        events={myEventsList}
+        events={events}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
