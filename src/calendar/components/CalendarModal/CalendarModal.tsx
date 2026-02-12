@@ -2,6 +2,7 @@ import { useState } from "react";
 import Modal from "react-modal";
 import "./CalendarModal.css";
 import { CalendarForm } from "./CalendarForm";
+import { useUiStore } from "../../../hooks";
 
 const customStyles = {
   content: {
@@ -17,18 +18,18 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
-  const [modalIsOpen, setIsOpen] = useState(true);
+  const { isDateModalOpen, openDateModal, closeDateModal } = useUiStore();
 
   function openModal() {
-    setIsOpen(true);
+    openDateModal();
   }
 
   function closeModal() {
-    setIsOpen(false);
+    closeDateModal();
   }
   return (
     <Modal
-      isOpen={modalIsOpen}
+      isOpen={isDateModalOpen}
       onRequestClose={closeModal}
       className="modal"
       overlayClassName="modal-fondo"

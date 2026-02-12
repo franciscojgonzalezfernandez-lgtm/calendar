@@ -10,6 +10,7 @@ import { getMessages } from "../../helpers";
 import { useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 import { CalendarModal } from "../components/CalendarModal/CalendarModal";
+import { useUiStore } from "../../hooks";
 
 const myEventsList: ExtendedEvent[] = [
   {
@@ -22,10 +23,6 @@ const myEventsList: ExtendedEvent[] = [
     },
   },
 ];
-
-const onDoubleClick = (event: ExtendedEvent) => {
-  console.log({ doubleClick: event });
-};
 
 const onSelect = (event: ExtendedEvent) => {
   console.log({ click: event });
@@ -53,6 +50,7 @@ const getStoredView = (key: string, fallback: View): View => {
 };
 
 export const CalendarPage = () => {
+  const { openDateModal } = useUiStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
     getStoredView("CalendarView", Views.MONTH)
@@ -61,6 +59,10 @@ export const CalendarPage = () => {
     localStorage.setItem("CalendarView", view);
     setView(view);
     console.log({ View: view });
+  };
+  const onDoubleClick = (event: ExtendedEvent) => {
+    console.log({ doubleClick: event });
+    openDateModal();
   };
   return (
     <>
