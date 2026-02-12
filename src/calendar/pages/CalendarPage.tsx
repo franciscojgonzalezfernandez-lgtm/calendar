@@ -1,7 +1,6 @@
 import { Calendar, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Event, EventPropGetter, View } from "react-big-calendar";
-import { addHours } from "date-fns";
 
 import { NavBar } from "../components/NavBar";
 import { CalendarEvent } from "../components/CalendarEvent";
@@ -10,8 +9,7 @@ import { getMessages } from "../../helpers";
 import { useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 import { CalendarModal } from "../components/CalendarModal/CalendarModal";
-import { useUiStore } from "../../hooks";
-import { useCalendarStore } from "../../hooks/useCalendarStore";
+import { useCalendarStore, useUiStore } from "../../hooks";
 
 const onSelect = (event: ExtendedEvent) => {
   console.log({ click: event });
