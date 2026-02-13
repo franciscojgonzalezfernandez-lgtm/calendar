@@ -10,10 +10,7 @@ import { useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 import { CalendarModal } from "../components/CalendarModal/CalendarModal";
 import { useCalendarStore, useUiStore } from "../../hooks";
-
-const onSelect = (event: ExtendedEvent) => {
-  console.log({ click: event });
-};
+import { calendarSlice } from "../../store";
 
 const myEventStyleGetter: EventPropGetter<Event> = (
   event: Event,
@@ -38,7 +35,7 @@ const getStoredView = (key: string, fallback: View): View => {
 
 export const CalendarPage = () => {
   const { openDateModal } = useUiStore();
-  const { events } = useCalendarStore();
+  const { events, activeEvent, setActiveEvent } = useCalendarStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
     getStoredView("CalendarView", Views.MONTH)
@@ -47,6 +44,10 @@ export const CalendarPage = () => {
     localStorage.setItem("CalendarView", view);
     setView(view);
     console.log({ View: view });
+  };
+  const onSelect = (event: ExtendedEvent) => {
+    setActiveEvent(event);
+    console.log({ click: event });
   };
   const onDoubleClick = (event: ExtendedEvent) => {
     console.log({ doubleClick: event });
