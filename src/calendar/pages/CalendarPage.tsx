@@ -2,21 +2,20 @@ import { Calendar, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Event, EventPropGetter, View } from "react-big-calendar";
 
-import { NavBar } from "../components/NavBar";
-import { CalendarEvent } from "../components/CalendarEvent";
+import { NavBar } from "../index";
+import { CalendarEvent } from "../index";
 import { localizer } from "../../helpers";
 import { getMessages } from "../../helpers";
 import { useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
-import { CalendarModal } from "../components/CalendarModal/CalendarModal";
+import { CalendarModal } from "../index";
 import { useCalendarStore, useUiStore } from "../../hooks";
-import { calendarSlice } from "../../store";
 
 const myEventStyleGetter: EventPropGetter<Event> = (
   event: Event,
   start: Date,
   end: Date,
-  isSelected: boolean
+  isSelected: boolean,
 ) => {
   return {
     style: {
@@ -38,7 +37,7 @@ export const CalendarPage = () => {
   const { events, activeEvent, setActiveEvent } = useCalendarStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
-    getStoredView("CalendarView", Views.MONTH)
+    getStoredView("CalendarView", Views.MONTH),
   );
   const onViewChange = (view: View) => {
     localStorage.setItem("CalendarView", view);
