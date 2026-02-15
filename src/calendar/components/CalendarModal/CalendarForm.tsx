@@ -1,16 +1,24 @@
 import { addHours, differenceInSeconds } from "date-fns";
-import React, { useMemo, useState, type FormEvent } from "react";
+import React, {
+  act,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
 import Swal from "sweetalert2";
+import { useCalendarStore } from "../../../hooks";
 
 export const CalendarForm = () => {
   const [formValues, setFormValues] = useState<ExtendedEvent>({
+    _id: 0,
     start: new Date(),
     end: addHours(new Date(), 2),
-    title: "New event",
-    notes: "event notes",
+    title: "",
+    notes: "",
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
@@ -20,6 +28,14 @@ export const CalendarForm = () => {
     }
     return "";
   }, [formValues.title, isSubmitted]);
+
+  const { activeEvent } = useCalendarStore();
+
+  useEffect(() => {
+    if (activeEvent !== null) {
+      setFormValues({ ...activeEvent });
+    }
+  }, [activeEvent]);
 
   const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -107,7 +123,7 @@ export const CalendarForm = () => {
             name="notes"
           ></textarea>
           <small id="emailHelp" className="form-text text-muted">
-            Additional information
+            {formValues.notes}
           </small>
         </div>
 

@@ -3,7 +3,13 @@ import type { ExtendedEvent } from "../interfaces/ExtendedEvent.interface";
 import { onSetActiveEvent } from "../store";
 
 export const useCalendarStore = () => {
-  const { events, activeEvent } = useSelector((state) => state.calendar);
+  const activeEvent = useSelector(
+    (state) => state.calendar.activeEvent,
+  ) as ExtendedEvent;
+
+  const events = useSelector(
+    (state) => state.calendar.events,
+  ) as ExtendedEvent[];
 
   const dispatch = useDispatch();
 
