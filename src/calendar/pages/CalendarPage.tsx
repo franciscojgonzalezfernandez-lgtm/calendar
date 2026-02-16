@@ -33,7 +33,7 @@ const getStoredView = (key: string, fallback: View): View => {
 };
 
 export const CalendarPage = () => {
-  const { openDateModal } = useUiStore();
+  const { openDateModal, isDateModalOpen } = useUiStore();
   const { events, activeEvent, setActiveEvent } = useCalendarStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
@@ -42,14 +42,11 @@ export const CalendarPage = () => {
   const onViewChange = (view: View) => {
     localStorage.setItem("CalendarView", view);
     setView(view);
-    console.log({ View: view });
   };
   const onSelect = (event: ExtendedEvent) => {
     setActiveEvent(event);
-    console.log({ click: event });
   };
   const onDoubleClick = (event: ExtendedEvent) => {
-    console.log({ doubleClick: event });
     openDateModal();
   };
   return (
@@ -74,7 +71,7 @@ export const CalendarPage = () => {
         onSelectEvent={onSelect}
       />
       <NewEventButton />
-      {activeEvent && <DeleteEventButton />}
+      {activeEvent && !isDateModalOpen && <DeleteEventButton />}
     </>
   );
 };
