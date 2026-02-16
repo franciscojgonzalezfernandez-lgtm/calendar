@@ -2,7 +2,7 @@ import { Calendar, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Event, EventPropGetter, View } from "react-big-calendar";
 
-import { NavBar } from "../index";
+import { NavBar, NewEventButton } from "../index";
 import { CalendarEvent } from "../index";
 import { localizer } from "../../helpers";
 import { getMessages } from "../../helpers";
@@ -61,7 +61,6 @@ export const CalendarPage = () => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
         messages={getMessages()}
         eventPropGetter={myEventStyleGetter}
         date={date}
@@ -74,6 +73,7 @@ export const CalendarPage = () => {
         onDoubleClickEvent={onDoubleClick}
         onSelectEvent={onSelect}
       />
+      <NewEventButton />
     </>
   );
 };

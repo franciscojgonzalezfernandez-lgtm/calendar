@@ -121,10 +121,9 @@ export const CalendarForm = () => {
             placeholder="Notes"
             rows={5}
             name="notes"
-          ></textarea>
-          <small id="emailHelp" className="form-text text-muted">
-            {formValues.notes}
-          </small>
+            value={formValues.notes}
+            onChange={onInputChanged}
+          />
         </div>
 
         <button type="submit" className="btn btn-outline-primary btn-block">
