@@ -2,7 +2,7 @@ import { Calendar, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Event, EventPropGetter, View } from "react-big-calendar";
 
-import { NavBar, NewEventButton } from "../index";
+import { DeleteEventButton, NavBar, NewEventButton } from "../index";
 import { CalendarEvent } from "../index";
 import { localizer } from "../../helpers";
 import { getMessages } from "../../helpers";
@@ -74,6 +74,7 @@ export const CalendarPage = () => {
         onSelectEvent={onSelect}
       />
       <NewEventButton />
+      {activeEvent && <DeleteEventButton />}
     </>
   );
 };

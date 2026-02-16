@@ -1,6 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { ExtendedEvent } from "../interfaces/ExtendedEvent.interface";
-import { onSetActiveEvent, onCreateEvent } from "../store";
+import {
+  onSetActiveEvent,
+  onCreateEvent,
+  onUpdateEvent,
+  onDeleteEvent,
+} from "../store";
 
 export const useCalendarStore = () => {
   const activeEvent = useSelector(
@@ -21,11 +26,16 @@ export const useCalendarStore = () => {
     //TODO call the backend.
 
     if (calendarEvent._id) {
-      // We are updating
+      dispatch(onUpdateEvent({ ...calendarEvent }));
     } else {
       // Creating
       dispatch(onCreateEvent({ ...calendarEvent, _id: new Date().getTime() }));
     }
+  };
+
+  const startDeletingEvent = async () => {
+    // Esperar al backend
+    dispatch(onDeleteEvent());
   };
 
   return {
@@ -33,5 +43,6 @@ export const useCalendarStore = () => {
     activeEvent,
     setActiveEvent,
     startSavingEvent,
+    startDeletingEvent,
   };
 };

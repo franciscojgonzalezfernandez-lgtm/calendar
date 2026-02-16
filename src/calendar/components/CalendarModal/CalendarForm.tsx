@@ -71,7 +71,7 @@ export const CalendarForm = () => {
   };
   return (
     <>
-      <h1>New Event</h1>
+      <h1>{formValues._id ? "Edit Event" : "New Event"} </h1>
       <hr />
       <form className="container" onSubmit={onSubmit}>
         <div className="form-group mb-2">
