@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
 import Swal from "sweetalert2";
 import { useCalendarStore } from "../../../hooks";
+import { useUiStore } from "../../../hooks";
 
 export const CalendarForm = () => {
   const [formValues, setFormValues] = useState<ExtendedEvent>({
@@ -29,7 +30,8 @@ export const CalendarForm = () => {
     return "";
   }, [formValues.title, isSubmitted]);
 
-  const { activeEvent } = useCalendarStore();
+  const { activeEvent, startSavingEvent } = useCalendarStore();
+  const { closeDateModal } = useUiStore();
 
   useEffect(() => {
     if (activeEvent !== null) {
@@ -42,7 +44,7 @@ export const CalendarForm = () => {
     setFormValues({ ...formValues, [target.name]: target.value });
     console.log({ change: event });
   };
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitted(true);
     const formData = new FormData(event.currentTarget);
@@ -62,6 +64,9 @@ export const CalendarForm = () => {
       formData.get("title");
       return;
     }
+    await startSavingEvent(formValues);
+    closeDateModal();
+    setIsSubmitted(false);
     console.log({ event });
   };
   return (
