@@ -7,7 +7,6 @@ export const NewEventButton = () => {
 
   const handleClick = () => {
     setActiveEvent({
-      _id: 0,
       title: "Hello",
       notes: "World",
       start: new Date(),
