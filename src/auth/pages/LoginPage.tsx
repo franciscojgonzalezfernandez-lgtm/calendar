@@ -1,8 +1,10 @@
+import { useAuthStore } from "../../hooks";
 import "./LoginPage.css";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 export const LoginPage = () => {
+  const { startLogin } = useAuthStore();
   const loginOptions = {
     email: { required: "Email is required" },
     password: { required: "Password is required" },
@@ -33,6 +35,8 @@ export const LoginPage = () => {
 
   const onLoginSubmit: SubmitHandler<typeof loginOptions> = (data) => {
     console.log(data);
+    // TODO - Call login API
+    startLogin(data.email, data.password);
   };
 
   const onRegisterSubmit: SubmitHandler<typeof registerOptions> = (data) => {
