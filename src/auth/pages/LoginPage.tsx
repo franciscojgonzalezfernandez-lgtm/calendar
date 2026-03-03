@@ -6,7 +6,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Swal from "sweetalert2";
 
 export const LoginPage = () => {
-  const { startLogin, errorMessage } = useAuthStore();
+  const { startLogin, errorMessage, startRegister } = useAuthStore();
   const loginOptions = {
     email: { required: "Email is required" },
     password: { required: "Password is required" },
@@ -43,11 +43,12 @@ export const LoginPage = () => {
 
   const onRegisterSubmit: SubmitHandler<typeof registerOptions> = (data) => {
     console.log(data);
+    startRegister(data.email, data.password, data.name);
   };
 
   useEffect(() => {
     if (errorMessage) {
-      Swal.fire("Login Failed", errorMessage, "error");
+      Swal.fire("Failed", errorMessage, "error");
     }
   }, [errorMessage]);
 

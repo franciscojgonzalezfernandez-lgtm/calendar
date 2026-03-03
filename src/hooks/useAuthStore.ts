@@ -37,6 +37,47 @@ export const useAuthStore = () => {
     }
   };
 
+  const startRegister = async (email, password, name) => {
+    console.log("Starting registration with", email, password, name);
+    // TODO - Implement registration logic, e.g. call register API, dispatch loginSuccess on success, handle errors
+    try {
+      const response = await calendarApi.post("/auth/new", {
+        email,
+        password,
+        name,
+      });
+      console.log(response.data);
+      localStorage.setItem("sessionToken", response.data.token); // Store token in localStorage
+      dispatch({
+        type: "auth/loginSuccess",
+        payload: {
+          user: response.data.user,
+          token: response.data.token,
+        },
+      });
+    } catch (error) {
+      console.error("Registration failed:", error);
+      if (error.response?.data?.errors) {
+        const apiErrors = error.response.data.errors;
+        const firstErrorKey = Object.keys(apiErrors)[0];
+        const errorMessages =
+          apiErrors[firstErrorKey].msg || "Registration failed";
+        dispatch({
+          type: "auth/logout",
+          payload: { error: errorMessages },
+        });
+        return;
+      }
+      dispatch({
+        type: "auth/logout",
+        payload: { error: "Registration failed" },
+      });
+      setTimeout(() => {
+        dispatch({ type: "auth/clearErrorMessage" });
+      }, 100);
+    }
+  };
+
   return {
     isAuthenticated,
     user,
@@ -44,5 +85,6 @@ export const useAuthStore = () => {
     errorMessage,
     // Methods
     startLogin,
+    startRegister,
   };
 };
