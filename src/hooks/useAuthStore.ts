@@ -68,6 +68,13 @@ export const useAuthStore = () => {
         });
         return;
       }
+      if (error.response?.data?.msg) {
+        dispatch({
+          type: "auth/logout",
+          payload: { error: error.response.data.msg },
+        });
+        return;
+      }
       dispatch({
         type: "auth/logout",
         payload: { error: "Registration failed" },
