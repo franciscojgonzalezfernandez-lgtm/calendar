@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { calendarApi } from "../api";
+import Swal from "sweetalert2";
 
 export const useAuthStore = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,8 @@ export const useAuthStore = () => {
           token: response.data.token,
         },
       });
+      Swal.fire("Success", "Registration successful", "success");
+      window.location.href = "/"; // Redirect to home page after successful registration
     } catch (error) {
       console.error("Registration failed:", error);
       if (error.response?.data?.errors) {
@@ -85,6 +88,33 @@ export const useAuthStore = () => {
     }
   };
 
+  const checkAuthToken = async () => {
+    const token = localStorage.getItem("sessionToken");
+    if (!token) {
+      dispatch({ type: "auth/logout" }); // No token, log out
+      return;
+    }
+    try {
+      const response = await calendarApi.get("/auth/renew");
+      console.log("Token renewed:", response.data);
+      localStorage.setItem("sessionToken", response.data.token);
+      dispatch({
+        type: "auth/loginSuccess",
+        payload: {
+          user: response.data.name,
+          token: response.data.token,
+        },
+      });
+    } catch (error) {
+      console.error("Token renewal failed:", error);
+      dispatch({ type: "auth/logout" });
+    }
+  };
+
+  const logout = () => {
+    dispatch({ type: "auth/logout" });
+  };
+
   return {
     isAuthenticated,
     user,
@@ -93,5 +123,7 @@ export const useAuthStore = () => {
     // Methods
     startLogin,
     startRegister,
+    checkAuthToken,
+    logout,
   };
 };
