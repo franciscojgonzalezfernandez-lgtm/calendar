@@ -30,23 +30,27 @@ export const useCalendarStore = () => {
     //TODO call the backend.
 
     if (calendarEvent.id) {
-      const { data } = await calendarApi.put(
-        `/events/${calendarEvent.id}`,
-        calendarEvent,
-      );
-      console.log(data);
-      dispatch(onUpdateEvent({ ...calendarEvent }));
+      try {
+        const { data } = await calendarApi.put(
+          `/events/${calendarEvent.id}`,
+          calendarEvent,
+        );
+        dispatch(onUpdateEvent({ ...calendarEvent }));
+      } catch (error) {
+        Swal.fire("Error", "Failed to update event", "error");
+        console.log(error);
+      }
     } else {
       try {
         const { data } = await calendarApi.post("/events/new", calendarEvent);
-        console.log(data);
+        dispatch(
+          onCreateEvent({ ...calendarEvent, _id: new Date().getTime() }),
+        );
       } catch (error) {
         Swal.fire("Error", "Failed to create event", "error");
         console.log(error);
       }
       // Creating
-
-      dispatch(onCreateEvent({ ...calendarEvent, _id: new Date().getTime() }));
     }
   };
 
@@ -64,9 +68,8 @@ export const useCalendarStore = () => {
 
   const loadEvents = async () => {
     try {
-      const { data } = await calendarApi.get("/events");
+      const { data } = await calendarApi.get("/events/all");
       const parsedEvents = convertEventsToNumber(data.events);
-      console.log(parsedEvents);
       dispatch(onLoadEvents(parsedEvents));
     } catch (error) {
       Swal.fire("Error", "Failed to load events", "error");

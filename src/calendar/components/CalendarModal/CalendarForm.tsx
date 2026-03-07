@@ -42,7 +42,6 @@ export const CalendarForm = () => {
   const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setFormValues({ ...formValues, [target.name]: target.value });
-    console.log({ change: event });
   };
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
