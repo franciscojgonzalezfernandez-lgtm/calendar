@@ -9,20 +9,7 @@ import { getMessages } from "../../helpers";
 import { useEffect, useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 import { CalendarModal } from "../index";
-import { useCalendarStore, useUiStore } from "../../hooks";
-
-const myEventStyleGetter: EventPropGetter<Event> = (
-  event: Event,
-  start: Date,
-  end: Date,
-  isSelected: boolean,
-) => {
-  return {
-    style: {
-      backgroundColor: isSelected ? "red" : "lightblue",
-    },
-  };
-};
+import { useCalendarStore, useUiStore, useAuthStore } from "../../hooks";
 
 const isValidView = (value: string | null): value is View =>
   Object.values(Views).includes(value as View);
@@ -36,6 +23,7 @@ export const CalendarPage = () => {
   const { openDateModal, isDateModalOpen } = useUiStore();
   const { events, activeEvent, setActiveEvent, loadEvents } =
     useCalendarStore();
+  const { uid } = useAuthStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
     getStoredView("CalendarView", Views.MONTH),
@@ -49,6 +37,22 @@ export const CalendarPage = () => {
   };
   const onDoubleClick = (event: ExtendedEvent) => {
     openDateModal();
+  };
+
+  const myEventStyleGetter: EventPropGetter<Event> = (
+    event: Event,
+    start: Date,
+    end: Date,
+    isSelected: boolean,
+  ) => {
+    const isMyEvent = (event: ExtendedEvent) => {
+      return event.user?.id === uid || event.user?._id === uid;
+    };
+    return {
+      style: {
+        backgroundColor: isMyEvent(event) ? "lightblue" : "lightgray",
+      },
+    };
   };
 
   useEffect(() => {

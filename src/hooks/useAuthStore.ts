@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 export const useAuthStore = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, user, status, errorMessage } = useSelector(
+  const { isAuthenticated, user, status, errorMessage, uid } = useSelector(
     (state) => state.auth,
   );
 
@@ -23,6 +23,7 @@ export const useAuthStore = () => {
         type: "auth/loginSuccess",
         payload: {
           user: response.data.user,
+          uid: response.data.uid,
           token: response.data.token,
         },
       });
@@ -102,6 +103,7 @@ export const useAuthStore = () => {
         type: "auth/loginSuccess",
         payload: {
           user: response.data.name,
+          uid: response.data.uid,
           token: response.data.token,
         },
       });
@@ -118,6 +120,7 @@ export const useAuthStore = () => {
   return {
     isAuthenticated,
     user,
+    uid,
     status,
     errorMessage,
     // Methods
