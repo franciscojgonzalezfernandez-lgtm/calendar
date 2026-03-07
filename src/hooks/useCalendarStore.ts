@@ -6,6 +6,7 @@ import {
   onUpdateEvent,
   onDeleteEvent,
 } from "../store";
+import { calendarApi } from "../api";
 
 export const useCalendarStore = () => {
   const activeEvent = useSelector(
@@ -26,9 +27,16 @@ export const useCalendarStore = () => {
     //TODO call the backend.
 
     if (calendarEvent._id) {
+      const { data } = await calendarApi.put(
+        `/events/${calendarEvent._id}`,
+        calendarEvent,
+      );
+      console.log(data);
       dispatch(onUpdateEvent({ ...calendarEvent }));
     } else {
       // Creating
+      const { data } = await calendarApi.post("/events/new", calendarEvent);
+      console.log(data);
       dispatch(onCreateEvent({ ...calendarEvent, _id: new Date().getTime() }));
     }
   };
