@@ -6,7 +6,7 @@ import { DeleteEventButton, NavBar, NewEventButton } from "../index";
 import { CalendarEvent } from "../index";
 import { localizer } from "../../helpers";
 import { getMessages } from "../../helpers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
 import { CalendarModal } from "../index";
 import { useCalendarStore, useUiStore } from "../../hooks";
@@ -34,7 +34,8 @@ const getStoredView = (key: string, fallback: View): View => {
 
 export const CalendarPage = () => {
   const { openDateModal, isDateModalOpen } = useUiStore();
-  const { events, activeEvent, setActiveEvent } = useCalendarStore();
+  const { events, activeEvent, setActiveEvent, loadEvents } =
+    useCalendarStore();
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
     getStoredView("CalendarView", Views.MONTH),
@@ -49,6 +50,11 @@ export const CalendarPage = () => {
   const onDoubleClick = (event: ExtendedEvent) => {
     openDateModal();
   };
+
+  useEffect(() => {
+    //TODO - Load events from backend
+    loadEvents();
+  }, []);
   return (
     <>
       <NavBar />

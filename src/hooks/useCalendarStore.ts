@@ -5,8 +5,11 @@ import {
   onCreateEvent,
   onUpdateEvent,
   onDeleteEvent,
+  onLoadEvents,
 } from "../store";
 import { calendarApi } from "../api";
+import Swal from "sweetalert2";
+import { convertEventsToNumber } from "../helpers/ConvertEventsToNumber";
 
 export const useCalendarStore = () => {
   const activeEvent = useSelector(
@@ -26,24 +29,49 @@ export const useCalendarStore = () => {
   const startSavingEvent = async (calendarEvent: ExtendedEvent) => {
     //TODO call the backend.
 
-    if (calendarEvent._id) {
+    if (calendarEvent.id) {
       const { data } = await calendarApi.put(
-        `/events/${calendarEvent._id}`,
+        `/events/${calendarEvent.id}`,
         calendarEvent,
       );
       console.log(data);
       dispatch(onUpdateEvent({ ...calendarEvent }));
     } else {
+      try {
+        const { data } = await calendarApi.post("/events/new", calendarEvent);
+        console.log(data);
+      } catch (error) {
+        Swal.fire("Error", "Failed to create event", "error");
+        console.log(error);
+      }
       // Creating
-      const { data } = await calendarApi.post("/events/new", calendarEvent);
-      console.log(data);
+
       dispatch(onCreateEvent({ ...calendarEvent, _id: new Date().getTime() }));
     }
   };
 
   const startDeletingEvent = async () => {
-    // Esperar al backend
-    dispatch(onDeleteEvent());
+    if (!activeEvent) return;
+
+    try {
+      await calendarApi.delete(`/events/${activeEvent.id}`);
+      dispatch(onDeleteEvent());
+    } catch (error) {
+      Swal.fire("Error", "Failed to delete event", "error");
+      console.log(error);
+    }
+  };
+
+  const loadEvents = async () => {
+    try {
+      const { data } = await calendarApi.get("/events");
+      const parsedEvents = convertEventsToNumber(data.events);
+      console.log(parsedEvents);
+      dispatch(onLoadEvents(parsedEvents));
+    } catch (error) {
+      Swal.fire("Error", "Failed to load events", "error");
+      console.log(error);
+    }
   };
 
   return {
@@ -52,5 +80,6 @@ export const useCalendarStore = () => {
     setActiveEvent,
     startSavingEvent,
     startDeletingEvent,
+    loadEvents,
   };
 };

@@ -15,7 +15,7 @@ import { useUiStore } from "../../../hooks";
 
 export const CalendarForm = () => {
   const [formValues, setFormValues] = useState<ExtendedEvent>({
-    _id: 0,
+    id: 0,
     start: new Date(),
     end: addHours(new Date(), 2),
     title: "",
@@ -71,7 +71,7 @@ export const CalendarForm = () => {
   };
   return (
     <>
-      <h1>{formValues._id ? "Edit Event" : "New Event"} </h1>
+      <h1>{formValues.id ? "Edit Event" : "New Event"} </h1>
       <hr />
       <form className="container" onSubmit={onSubmit}>
         <div className="form-group mb-2">
