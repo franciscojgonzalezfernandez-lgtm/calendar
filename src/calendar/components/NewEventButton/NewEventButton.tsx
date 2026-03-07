@@ -7,14 +7,10 @@ export const NewEventButton = () => {
 
   const handleClick = () => {
     setActiveEvent({
-      title: "Hello",
-      notes: "World",
+      title: "Write title",
+      notes: "Notes of the event",
       start: new Date(),
       end: addHours(new Date(), 2),
-      user: {
-        id: "123",
-        name: "Javier",
-      },
     });
     openDateModal();
   };
