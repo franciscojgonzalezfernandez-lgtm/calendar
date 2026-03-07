@@ -1,22 +1,35 @@
+import { useCallback, useEffect, useState } from "react";
 import { Calendar, Views } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Event, EventPropGetter, View } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { DeleteEventButton, NavBar, NewEventButton } from "../index";
-import { CalendarEvent } from "../index";
-import { localizer } from "../../helpers";
-import { getMessages } from "../../helpers";
-import { useEffect, useState } from "react";
-import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
-import { CalendarModal } from "../index";
+import {
+  DeleteEventButton,
+  NavBar,
+  NewEventButton,
+  CalendarEvent,
+  CalendarModal,
+} from "../index";
+
+import { localizer, getMessages } from "../../helpers";
 import { useCalendarStore, useUiStore, useAuthStore } from "../../hooks";
+import type { ExtendedEvent } from "../../interfaces/ExtendedEvent.interface";
+
+/**
+ * CalendarPage
+ *
+ * Displays the main calendar view, loads events from the store and
+ * handles user interactions (select, double click, change view).
+ */
+
+const STORAGE_KEY = "CalendarView";
 
 const isValidView = (value: string | null): value is View =>
   Object.values(Views).includes(value as View);
 
 const getStoredView = (key: string, fallback: View): View => {
   const stored = localStorage.getItem(key);
-  return isValidView(stored) ? stored : fallback;
+  return isValidView(stored) ? (stored as View) : fallback;
 };
 
 export const CalendarPage = () => {
@@ -24,39 +37,45 @@ export const CalendarPage = () => {
   const { events, activeEvent, setActiveEvent, loadEvents } =
     useCalendarStore();
   const { uid } = useAuthStore();
+
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState<View>(
-    getStoredView("CalendarView", Views.MONTH),
+    getStoredView(STORAGE_KEY, Views.MONTH),
   );
-  const onViewChange = (view: View) => {
-    localStorage.setItem("CalendarView", view);
-    setView(view);
-  };
-  const onSelect = (event: ExtendedEvent) => {
-    setActiveEvent(event);
-  };
-  const onDoubleClick = (event: ExtendedEvent) => {
-    openDateModal();
-  };
 
-  const myEventStyleGetter: EventPropGetter<Event> = (
-    event: Event,
-    start: Date,
-    end: Date,
-    isSelected: boolean,
-  ) => {
-    const isMyEvent = (event: ExtendedEvent) => {
-      return event.user?.id === uid || event.user?._id === uid;
-    };
-    return {
-      style: {
-        backgroundColor: isMyEvent(event) ? "lightblue" : "lightgray",
-      },
-    };
-  };
+  const onViewChange = useCallback((nextView: View) => {
+    localStorage.setItem(STORAGE_KEY, nextView);
+    setView(nextView);
+  }, []);
+
+  const onSelect = useCallback(
+    (event: ExtendedEvent) => {
+      setActiveEvent(event);
+    },
+    [setActiveEvent],
+  );
+
+  const onDoubleClick = useCallback(() => {
+    openDateModal();
+  }, [openDateModal]);
+
+  const myEventStyleGetter: EventPropGetter<Event> = useCallback(
+    (event: Event) => {
+      const isMyEvent = (ev: ExtendedEvent) =>
+        ev.user?.id === uid || ev.user?._id === uid;
+      return {
+        style: {
+          backgroundColor: isMyEvent(event as ExtendedEvent)
+            ? "lightblue"
+            : "lightgray",
+        },
+      };
+    },
+    [uid],
+  );
 
   useEffect(() => {
-    //TODO - Load events from backend
+    // Load events from backend/store on mount
     loadEvents();
   }, []);
   return (
