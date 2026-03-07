@@ -6,6 +6,7 @@ import {
   onUpdateEvent,
   onDeleteEvent,
   onLoadEvents,
+  onLogoutCalendar,
 } from "../store";
 import { calendarApi } from "../api";
 import Swal from "sweetalert2";
@@ -26,7 +27,10 @@ export const useCalendarStore = () => {
     dispatch(onSetActiveEvent(calendarEvent));
   };
 
-  const startSavingEvent = async (calendarEvent: ExtendedEvent) => {
+  const startSavingEvent = async (
+    calendarEvent: ExtendedEvent,
+    user: { id: string; name: string },
+  ) => {
     //TODO call the backend.
 
     if (calendarEvent.id) {
@@ -44,7 +48,11 @@ export const useCalendarStore = () => {
       try {
         const { data } = await calendarApi.post("/events/new", calendarEvent);
         dispatch(
-          onCreateEvent({ ...calendarEvent, _id: new Date().getTime() }),
+          onCreateEvent({
+            ...calendarEvent,
+            _id: new Date().getTime(),
+            user: { id: user.id, name: user.name },
+          }),
         );
       } catch (error) {
         Swal.fire("Error", "Failed to create event", "error");
@@ -77,10 +85,15 @@ export const useCalendarStore = () => {
     }
   };
 
+  const logoutCalendar = () => {
+    dispatch(onLogoutCalendar());
+  };
+
   return {
     events,
     activeEvent,
     setActiveEvent,
+    logoutCalendar,
     startSavingEvent,
     startDeletingEvent,
     loadEvents,

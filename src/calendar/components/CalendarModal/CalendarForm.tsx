@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
 import Swal from "sweetalert2";
-import { useCalendarStore } from "../../../hooks";
+import { useCalendarStore, useAuthStore } from "../../../hooks";
 import { useUiStore } from "../../../hooks";
 
 export const CalendarForm = () => {
@@ -21,6 +21,7 @@ export const CalendarForm = () => {
     title: "",
     notes: "",
   });
+  const { user, uid } = useAuthStore();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const titleClass = useMemo(() => {
@@ -63,7 +64,7 @@ export const CalendarForm = () => {
       formData.get("title");
       return;
     }
-    await startSavingEvent(formValues);
+    await startSavingEvent(formValues, { id: uid!, name: user! });
     closeDateModal();
     setIsSubmitted(false);
     console.log({ event });

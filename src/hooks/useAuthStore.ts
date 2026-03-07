@@ -115,6 +115,7 @@ export const useAuthStore = () => {
 
   const logout = () => {
     dispatch({ type: "auth/logout" });
+    dispatch({ type: "calendar/onLogoutCalendar" }); // Clear calendar state on logout
   };
 
   return {

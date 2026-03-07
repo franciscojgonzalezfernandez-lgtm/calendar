@@ -14,7 +14,7 @@ const tempEvent: ExtendedEvent = {
 };
 
 export const calendarSlice = createSlice({
-  name: "ui",
+  name: "calendar",
   initialState: {
     events: [tempEvent],
     activeEvent: null,
@@ -46,6 +46,10 @@ export const calendarSlice = createSlice({
     onLoadEvents: (state, { payload }) => {
       state.events = payload;
     },
+    onLogoutCalendar: (state) => {
+      state.events = [];
+      state.activeEvent = null;
+    },
   },
 });
 
@@ -54,5 +58,6 @@ export const {
   onCreateEvent,
   onUpdateEvent,
   onDeleteEvent,
+  onLogoutCalendar,
   onLoadEvents,
 } = calendarSlice.actions;
