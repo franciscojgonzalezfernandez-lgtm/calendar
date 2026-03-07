@@ -9,7 +9,7 @@ import {
 } from "../store";
 import { calendarApi } from "../api";
 import Swal from "sweetalert2";
-import { convertEventsToNumber } from "../helpers/ConvertEventsToNumber";
+import { convertEventsToNumber } from "../helpers/ConvertEventsToDate";
 
 export const useCalendarStore = () => {
   const activeEvent = useSelector(
