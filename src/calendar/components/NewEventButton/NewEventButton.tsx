@@ -7,8 +7,8 @@ export const NewEventButton = () => {
 
   const handleClick = () => {
     setActiveEvent({
-      title: "Write title",
-      notes: "Notes of the event",
+      title: "",
+      notes: "",
       start: new Date(),
       end: addHours(new Date(), 2),
     });
