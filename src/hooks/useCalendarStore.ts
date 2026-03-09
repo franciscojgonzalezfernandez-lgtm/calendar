@@ -39,7 +39,6 @@ export const useCalendarStore = () => {
         dispatch(onUpdateEvent({ ...calendarEvent }));
       } catch (error: any) {
         Swal.fire("Error", "Failed to update event", "error");
-        console.log(error);
       }
     } else {
       try {
@@ -53,7 +52,6 @@ export const useCalendarStore = () => {
         );
       } catch (error) {
         Swal.fire("Error", "Failed to create event", "error");
-        console.log(error);
       }
       // Creating
     }
@@ -67,7 +65,6 @@ export const useCalendarStore = () => {
       dispatch(onDeleteEvent());
     } catch (error) {
       Swal.fire("Error", "Failed to delete event", "error");
-      console.log(error);
     }
   };
 
@@ -78,7 +75,6 @@ export const useCalendarStore = () => {
       dispatch(onLoadEvents(parsedEvents));
     } catch (error) {
       Swal.fire("Error", "Failed to load events", "error");
-      console.log(error);
     }
   };
 

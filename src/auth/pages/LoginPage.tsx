@@ -52,13 +52,11 @@ export const LoginPage = () => {
   });
 
   const onLoginSubmit: SubmitHandler<LoginForm> = (data) => {
-    console.log(data);
     // TODO - Call login API
     startLogin(data.email, data.password);
   };
 
   const onRegisterSubmit: SubmitHandler<RegisterForm> = (data) => {
-    console.log(data);
     startRegister(data.email, data.password, data.name);
   };
 

@@ -9,15 +9,12 @@ export const useAuthStore = () => {
   );
 
   const startLogin = async (email: string, password: string) => {
-    console.log("Starting login with", email, password);
-    // TODO - Implement login logic, e.g. call login API, dispatch loginSuccess on success, handle errors
     dispatch({ type: "auth/checkingCredentials" }); // Set status to checking
     try {
       const response = await calendarApi.post("/auth/login", {
         email,
         password,
       });
-      console.log(response.data);
       localStorage.setItem("sessionToken", response.data.token); // Store token in localStorage
       dispatch({
         type: "auth/loginSuccess",
