@@ -5,7 +5,7 @@ export const convertEventsToNumber = (
 ): ExtendedEvent[] => {
   return events.map((event: ExtendedEvent) => ({
     ...event,
-    start: new Date(event.start),
-    end: new Date(event.end),
+    start: event.start ? new Date(event.start as any) : undefined,
+    end: event.end ? new Date(event.end as any) : undefined,
   }));
 };

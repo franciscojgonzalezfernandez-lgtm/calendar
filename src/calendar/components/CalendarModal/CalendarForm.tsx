@@ -1,11 +1,5 @@
 import { addHours, differenceInSeconds } from "date-fns";
-import React, {
-  act,
-  useEffect,
-  useMemo,
-  useState,
-  type FormEvent,
-} from "react";
+import React, { useEffect, useMemo, useState, type FormEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { ExtendedEvent } from "../../../interfaces/ExtendedEvent.interface";
@@ -40,8 +34,12 @@ export const CalendarForm = () => {
     }
   }, [activeEvent]);
 
-  const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
+  const onInputChanged = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { target } = event as React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >;
     setFormValues({ ...formValues, [target.name]: target.value });
   };
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -80,7 +78,7 @@ export const CalendarForm = () => {
             selected={formValues.start}
             className="form-control"
             onChange={(date: Date | null) => {
-              setFormValues({ ...formValues, start: date || undefined });
+              setFormValues({ ...formValues, start: date ?? undefined });
             }}
             dateFormat="dd/MM/yyyy HH:mm"
             showTimeSelect
@@ -92,13 +90,13 @@ export const CalendarForm = () => {
           <DatePicker
             selected={formValues.end}
             onChange={(date: Date | null) => {
-              setFormValues({ ...formValues, end: date || undefined });
+              setFormValues({ ...formValues, end: date ?? undefined });
             }}
             className="form-control"
             dateFormat="dd/MM/yyyy HH:mm"
             minDate={formValues.start}
             minTime={formValues.start}
-            maxTime={new Date().setHours(23, 59, 0, 0)}
+            maxTime={new Date(new Date().setHours(23, 59, 0, 0))}
             showTimeSelect
           />
         </div>
@@ -111,7 +109,7 @@ export const CalendarForm = () => {
             className={`form-control ${titleClass}`}
             placeholder="Event title"
             name="title"
-            value={formValues.title}
+            value={String(formValues.title ?? "")}
             onChange={onInputChanged}
             autoComplete="off"
           />
@@ -126,7 +124,7 @@ export const CalendarForm = () => {
             placeholder="Notes"
             rows={5}
             name="notes"
-            value={formValues.notes}
+            value={String(formValues.notes ?? "")}
             onChange={onInputChanged}
           />
         </div>

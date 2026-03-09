@@ -8,9 +8,10 @@ const calendarApi = axios.create({
 calendarApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("sessionToken");
   if (token) {
-    config.headers = {
-      ...config.headers,
-      "x-token": `${token}`,
+    // Assign header in a type-safe way for Axios headers
+    (config.headers as any) = {
+      ...(config.headers as any),
+      ["x-token"]: `${token}`,
     };
   }
   return config;

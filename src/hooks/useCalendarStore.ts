@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import type { ExtendedEvent } from "../interfaces/ExtendedEvent.interface";
 import {
   onSetActiveEvent,
@@ -13,15 +13,15 @@ import Swal from "sweetalert2";
 import { convertEventsToNumber } from "../helpers/ConvertEventsToDate";
 
 export const useCalendarStore = () => {
-  const activeEvent = useSelector(
+  const activeEvent = useAppSelector(
     (state) => state.calendar.activeEvent,
-  ) as ExtendedEvent;
+  ) as ExtendedEvent | null;
 
-  const events = useSelector(
+  const events = useAppSelector(
     (state) => state.calendar.events,
   ) as ExtendedEvent[];
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const setActiveEvent = (calendarEvent: ExtendedEvent) => {
     dispatch(onSetActiveEvent(calendarEvent));
@@ -35,22 +35,19 @@ export const useCalendarStore = () => {
 
     if (calendarEvent.id) {
       try {
-        const { data } = await calendarApi.put(
-          `/events/${calendarEvent.id}`,
-          calendarEvent,
-        );
+        await calendarApi.put(`/events/${calendarEvent.id}`, calendarEvent);
         dispatch(onUpdateEvent({ ...calendarEvent }));
-      } catch (error) {
+      } catch (error: any) {
         Swal.fire("Error", "Failed to update event", "error");
         console.log(error);
       }
     } else {
       try {
-        const { data } = await calendarApi.post("/events/new", calendarEvent);
+        await calendarApi.post("/events/new", calendarEvent);
         dispatch(
           onCreateEvent({
             ...calendarEvent,
-            _id: new Date().getTime(),
+            id: new Date().getTime(),
             user: { id: user.id, name: user.name },
           }),
         );

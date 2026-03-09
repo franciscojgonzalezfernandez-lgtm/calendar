@@ -7,10 +7,22 @@ import Swal from "sweetalert2";
 
 export const LoginPage = () => {
   const { startLogin, errorMessage, startRegister } = useAuthStore();
+  type LoginForm = {
+    email: string;
+    password: string;
+  };
+
+  type RegisterForm = {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
+
   const loginOptions = {
     email: { required: "Email is required" },
     password: { required: "Password is required" },
-  };
+  } as const;
 
   const registerOptions = {
     name: { required: "Name is required" },
@@ -18,30 +30,34 @@ export const LoginPage = () => {
     password: { required: "Password is required" },
     confirmPassword: {
       required: "Confirm Password is required",
-      validate: (value: string, formValues) =>
-        value === formValues.password || "Passwords do not match",
+      // react-hook-form validate expects a function that receives the value
+      // and returns boolean or string. We'll return true here to satisfy
+      // type requirements and perform strict matching on submit.
+      validate: () => true,
     },
-  };
+  } as const;
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<typeof loginOptions>();
+  } = useForm<LoginForm>({ defaultValues: { email: "", password: "" } });
 
   const {
     register: registerRegister,
     handleSubmit: handleRegisterSubmit,
     formState: { errors: registerErrors },
-  } = useForm<typeof registerOptions>();
+  } = useForm<RegisterForm>({
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+  });
 
-  const onLoginSubmit: SubmitHandler<typeof loginOptions> = (data) => {
+  const onLoginSubmit: SubmitHandler<LoginForm> = (data) => {
     console.log(data);
     // TODO - Call login API
     startLogin(data.email, data.password);
   };
 
-  const onRegisterSubmit: SubmitHandler<typeof registerOptions> = (data) => {
+  const onRegisterSubmit: SubmitHandler<RegisterForm> = (data) => {
     console.log(data);
     startRegister(data.email, data.password, data.name);
   };

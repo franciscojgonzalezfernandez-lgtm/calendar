@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Modal from "react-modal";
 import "./CalendarModal.css";
 import { CalendarForm } from "./CalendarForm";
@@ -18,11 +17,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
-  const { isDateModalOpen, openDateModal, closeDateModal } = useUiStore();
-
-  function openModal() {
-    openDateModal();
-  }
+  const { isDateModalOpen, closeDateModal } = useUiStore();
 
   function closeModal() {
     closeDateModal();

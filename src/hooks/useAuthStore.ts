@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
 import { calendarApi } from "../api";
 import Swal from "sweetalert2";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 export const useAuthStore = () => {
-  const dispatch = useDispatch();
-  const { isAuthenticated, user, status, errorMessage, uid } = useSelector(
+  const dispatch = useAppDispatch();
+  const { isAuthenticated, user, status, errorMessage, uid } = useAppSelector(
     (state) => state.auth,
   );
 
-  const startLogin = async (email, password) => {
+  const startLogin = async (email: string, password: string) => {
     console.log("Starting login with", email, password);
     // TODO - Implement login logic, e.g. call login API, dispatch loginSuccess on success, handle errors
     dispatch({ type: "auth/checkingCredentials" }); // Set status to checking
@@ -27,7 +27,7 @@ export const useAuthStore = () => {
           token: response.data.token,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
       dispatch({
         type: "auth/logout",
@@ -39,7 +39,11 @@ export const useAuthStore = () => {
     }
   };
 
-  const startRegister = async (email, password, name) => {
+  const startRegister = async (
+    email: string,
+    password: string,
+    name: string,
+  ) => {
     console.log("Starting registration with", email, password, name);
     // TODO - Implement registration logic, e.g. call register API, dispatch loginSuccess on success, handle errors
     try {
@@ -59,7 +63,7 @@ export const useAuthStore = () => {
       });
       Swal.fire("Success", "Registration successful", "success");
       window.location.href = "/"; // Redirect to home page after successful registration
-    } catch (error) {
+    } catch (error: any) {
       console.error("Registration failed:", error);
       if (error.response?.data?.errors) {
         const apiErrors = error.response.data.errors;
@@ -107,7 +111,7 @@ export const useAuthStore = () => {
           token: response.data.token,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Token renewal failed:", error);
       dispatch({ type: "auth/logout" });
     }

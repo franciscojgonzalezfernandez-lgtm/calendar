@@ -61,8 +61,7 @@ export const CalendarPage = () => {
 
   const myEventStyleGetter: EventPropGetter<Event> = useCallback(
     (event: Event) => {
-      const isMyEvent = (ev: ExtendedEvent) =>
-        ev.user?.id === uid || ev.user?._id === uid;
+      const isMyEvent = (ev: ExtendedEvent) => ev.user?.id === uid;
       return {
         style: {
           backgroundColor: isMyEvent(event as ExtendedEvent)
