@@ -1,31 +1,37 @@
 # Calendar App 🚀
 
-**UNDER CONSTRUCTION...**
+**Date management app** built with **Bootstrap + Redux** and **last version of React** to master date handling before my **ambitious snowboard lesson booking platform**. Perfect portfolio project showcasing full-stack basics with MongoDB backend.
 
-Simple date management app built with **Bootstrap + Redux** to master date handling before my **ambitious snowboard lesson booking platform**. Perfect portfolio project showcasing full-stack basics with MongoDB backend.
+<p align="center">
+  <a href="https://franciscojgonzalezfernandez-lgtm.github.io/calendar/">
+    <b>🔥 TRY IT YOURSELF</b>
+  </a> • 
+  <a href="https://github.com/franciscojgonzalezfernandez-lgtm/calendar-backend">
+    <b>📱 BACKEND PROJECT</b>
+  </a>
+</p>
 
-
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Category     | Tech              |
 |--------------|-------------------|
-| Framework    | React + TypeScript |
+| Framework    | React19 + TypeScript |
 | State        | Redux Toolkit     |
 | Styling      | Bootstrap 5       |
 | Backend      | Node.js + MongoDB |
 | Dates        | date-fns          |
-| Build        | Vite              |
+| Build        | Vite + GitHub Pages |
 
 ## 🎯 Why This Project?
 
-Small stepping stone to build **date fluency** (range selection, availability, validations) before the **BIG Snowboard Booking Platform**.
+**Stepping stone** to build **date fluency** (range selection, availability, validations) before the **BIG Snowboard Booking Platform**.
 
-- Bootstrap for responsive UI (mobile-first snow pros)
-- Redux for scalable state (future multi-user bookings)
-- MongoDB for real persistence
-- TypeScript everywhere
+- 🎨 Bootstrap responsive (mobile-first for snow pros)
+- 🧠 Redux scalable (future multi-user bookings) 
+- 🗄️ MongoDB real persistence
+- ✅ TypeScript everywhere
 
-## Features
+## ✨ Features
 
 - ✅ Calendar picker with date ranges
 - ✅ Redux state sync across components
@@ -33,35 +39,38 @@ Small stepping stone to build **date fluency** (range selection, availability, v
 - ✅ MongoDB CRUD operations
 - ✅ Responsive design (desktop/mobile)
 
-## Architecture
+## 🏗️ Architecture
+
 Frontend (React/Redux/Bootstrap)
 ↓ API calls
 Backend (Node/Express/Mongo)
 ↓ Persist
-MongoDB Collections: events, bookings
-
+MongoDB: events, bookings
 
 
 **Patterns learned:**
 - Redux slices for date logic
-- Date-fns utils (isValid, format, etc.)
+- Date-fns utils (`isValid`, `format`, etc.)
 - Bootstrap grid/flex for snow resort layouts
 
-## Next Steps → Snowboard Booking
+## 🚀 Next Steps → Snowboard Booking
 
 This powers my **full platform**:
-- Instructor calendars
-- Lesson availability
-- User bookings
-- Payments (Stripe)
+- 📅 Instructor calendars
+- ✅ Lesson availability
+- 💳 User bookings
+- 💰 Payments (Stripe)
 
-## Run Locally
+## 🏃‍♂️ Run Locally
 
 ```bash
 # Frontend
 npm install
 npm run dev
-```
-**Built with ❤️ in Zürich (small steps to BIG platforms)**
 
-**⭐ Star for more tech**
+```
+
+👨‍💻 Built with ❤️ from Zürich
+
+**⭐ Star if you like the tech**
+
