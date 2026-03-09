@@ -19,7 +19,7 @@ export const useAuthStore = () => {
       dispatch({
         type: "auth/loginSuccess",
         payload: {
-          user: response.data.user,
+          user: response.data.name,
           uid: response.data.uid,
           token: response.data.token,
         },
@@ -41,7 +41,6 @@ export const useAuthStore = () => {
     password: string,
     name: string,
   ) => {
-    console.log("Starting registration with", email, password, name);
     // TODO - Implement registration logic, e.g. call register API, dispatch loginSuccess on success, handle errors
     try {
       const response = await calendarApi.post("/auth/new", {
@@ -49,13 +48,13 @@ export const useAuthStore = () => {
         password,
         name,
       });
-      console.log(response.data);
       localStorage.setItem("sessionToken", response.data.token); // Store token in localStorage
       dispatch({
         type: "auth/loginSuccess",
         payload: {
-          user: response.data.user,
+          user: response.data.name,
           token: response.data.token,
+          uid: response.data.uid,
         },
       });
       Swal.fire("Success", "Registration successful", "success");
@@ -98,7 +97,6 @@ export const useAuthStore = () => {
     }
     try {
       const response = await calendarApi.get("/auth/renew");
-      console.log("Token renewed:", response.data);
       localStorage.setItem("sessionToken", response.data.token);
       dispatch({
         type: "auth/loginSuccess",
