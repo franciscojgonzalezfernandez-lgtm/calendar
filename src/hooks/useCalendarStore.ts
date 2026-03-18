@@ -42,14 +42,18 @@ export const useCalendarStore = () => {
       }
     } else {
       try {
-        await calendarApi.post("/events/new", calendarEvent);
-        dispatch(
-          onCreateEvent({
-            ...calendarEvent,
-            id: new Date().getTime(),
-            user: { id: user.id, name: user.name },
-          }),
-        );
+        const { data } = await calendarApi.post("/events/new", calendarEvent);
+
+        // Backend returns the created event in data.event
+        const returnedEvent = data?.event;
+
+        const createdEvent: ExtendedEvent = {
+          ...calendarEvent,
+          id: returnedEvent?.id ?? returnedEvent?._id ?? new Date().getTime(),
+          user: { id: user.id, name: user.name },
+        } as ExtendedEvent;
+
+        dispatch(onCreateEvent(createdEvent));
       } catch (error) {
         Swal.fire("Error", "Failed to create event", "error");
       }
