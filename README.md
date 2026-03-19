@@ -3,6 +3,9 @@
 **Date management app** built with **Bootstrap + Redux** and **last version of React** to master date handling before my **ambitious snowboard lesson booking platform**. Perfect portfolio project showcasing full-stack basics with MongoDB backend.
 
 <p align="center">
+  <a href="https://javier-gonzalez-portfolio.com/portfolio/full-stack-calendar">
+    <b>🖥️ LIVE DEMO</b>
+  </a> • 
   <a href="https://franciscojgonzalezfernandez-lgtm.github.io/calendar/">
     <b>🔥 TRY IT YOURSELF</b>
   </a> • 
